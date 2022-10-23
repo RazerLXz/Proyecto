@@ -1,15 +1,18 @@
 from cgitb import text
+from re import I
 from subprocess import list2cmdline
 from tkinter import *
 from tkinter import ttk
 import sqlite3
 
-con = sqlite3.connect("")
+con = sqlite3.connect("test.db")
+cursor = con.cursor()
 root = Tk()
 root.resizable(0, 0)
 
 root.title("Trabajo")
 root.geometry("640x380")
+
 
 #Marca
 lbl1 = ttk.Label(root, text="Marca")
@@ -143,10 +146,11 @@ def FechaEnt5(event):
 ent5.bind("<Key>", FechaEnt5)
 ent5.bind("<BackSpace>", lambda _:ent5.delete(root.END))
 
+campos = [ent1,ent2,ent3,ent4,ent5,entwl,entwl2,entwl3,entwl4,entwl5,entwl6,entwl7,entwl8,entwl9,entwl0,entwl01,entwl02,entwl03,entwl04,entwl05]
+camposWL = [entwl,entwl2,entwl3,entwl4,entwl5,entwl6,entwl7,entwl8,entwl9,entwl0,entwl01,entwl02,entwl03,entwl04,entwl05]
+
 #Borrar todos los entrys
-def clearTextInput():
-    campos = [ent1,ent2,ent3,ent4,ent5,entwl,entwl2,entwl3,entwl4,entwl5,entwl6,entwl7,entwl8,entwl9,entwl0,entwl01,entwl02,entwl03,entwl04,entwl05]
-    
+def clearTextInput():  
     for i in campos:
         i.delete(0, END)
         
@@ -157,13 +161,19 @@ btnClear.grid(row=110, column=1, pady=30, ipady=15, ipadx=15)
 
 
 def Save():
-    pass
-
+    camposWL = [entwl,entwl2,entwl3,entwl4,entwl5,entwl6,entwl7,entwl8,entwl9,entwl0,entwl01,entwl02,entwl03,entwl04,entwl05]
+    for i in camposWL:
+        cursor.executemany("INSERT INTO test2 (P1, P2, P3, P4, P5, P6, P7, P8, P9, P10, P11, P12, P13, P14, P15) VALUES ()", i)
+        con.commit()
+        con.close()
+        
 
 
 #Boton Save
 btnSave=ttk.Button(root, width=10, text="Save", command=Save)
 btnSave.grid(row=110, column=5, pady=30, ipady=15, ipadx=15)
+
+
 
 root.mainloop()
 
